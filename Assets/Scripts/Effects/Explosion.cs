@@ -4,6 +4,6 @@ public class Explosion : MonoBehaviour
 {
     void Start()
     {
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 1f); // Duração da explosão
     }
 }
