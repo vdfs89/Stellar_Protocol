@@ -12,6 +12,17 @@ public class Bullet : MonoBehaviour
 
     void OnBecameInvisible()
     {
-        Destroy(gameObject); // Destroi a bala se sair da tela
+        // Destroi a bala se sair da tela
+        Destroy(gameObject);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        // Verifica se colidiu com um inimigo
+        if (other.CompareTag("Inimigo"))
+        {
+            Destroy(other.gameObject); // Destroi o inimigo
+            Destroy(gameObject);       // Destroi a bala
+        }
     }
 }

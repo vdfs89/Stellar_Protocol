@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem; // Necessário para o novo sistema de input
 
 public class PlayerShoot : MonoBehaviour
 {
@@ -12,13 +13,16 @@ public class PlayerShoot : MonoBehaviour
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>(); // Pega o componente de som
     }
 
     void Update()
     {
-        // Atira com ESPAÇO ou W
-        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W)) && Time.time >= nextFireTime)
+        // Verifica se o espaço ou W foi pressionado e se já pode atirar novamente
+        bool fireKey = 
+            (Keyboard.current.spaceKey.isPressed || Keyboard.current.wKey.isPressed);
+
+        if (fireKey && Time.time >= nextFireTime)
         {
             Shoot();
             nextFireTime = Time.time + fireRate;
@@ -27,9 +31,10 @@ public class PlayerShoot : MonoBehaviour
 
     void Shoot()
     {
+        // Cria o projétil na posição e rotação do firePoint
         Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
 
-        // Toca o som do tiro
+        // Reproduz o som do tiro (se houver)
         if (tiroSom != null && audioSource != null)
         {
             audioSource.PlayOneShot(tiroSom);
