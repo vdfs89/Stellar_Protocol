@@ -1,31 +1,31 @@
-using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+using UnityEngine;                        // Biblioteca principal do Unity
+using System.Collections;                // Coleções não genéricas
+using System.Collections.Generic;        // Coleções genéricas
 
-public class Generation : MonoBehaviour
+public class Generation : MonoBehaviour  // Classe responsável pela geração de objetos
 {
-    public GameObject[] objetosaleatorios;
-    public Transform[] locaisaleatorios;
+    public GameObject[] objetosaleatorios; // Prefabs que podem aparecer
+    public Transform[] locaisaleatorios;   // Locais onde podem surgir
 
-    public float tempoentreobjetos;
-    public float tempo;
+    public float tempoentreobjetos;        // Intervalo de tempo entre objetos
+    public float tempo;                    // Temporizador interno
 
-    void Start()
+    void Start()                           // Executado no início
     {
-        // tempo pode começar zerado ou já com o intervalo inicial
-        tempo = tempoentreobjetos;
-    }
+        // tempo inicia com tempoentreobjetos (o intervalo inicial)
+        tempo = tempoentreobjetos;         // Define o valor inicial do tempo
+    }                                      // Fim do Start
 
-    void Update()
+    void Update()                          // Chamado a cada frame
     {
-        tempo -= Time.deltaTime;
+        tempo -= Time.deltaTime;           // Diminui o temporizador
 
-        if (tempo <= 0)
+        if (tempo <= 0)                    // Quando o tempo chega a zero
         {
-            int objaleatorio = Random.Range(0, objetosaleatorios.Length);
-            int ptaleatorio = Random.Range(0, locaisaleatorios.Length);
-            Instantiate(objetosaleatorios[objaleatorio], locaisaleatorios[ptaleatorio].position, locaisaleatorios[ptaleatorio].rotation);
-            tempo = tempoentreobjetos;
-        }
-    }
-}
+            int objaleatorio = Random.Range(0, objetosaleatorios.Length); // Escolhe objeto
+            int ptaleatorio = Random.Range(0, locaisaleatorios.Length);   // Escolhe posição
+            Instantiate(objetosaleatorios[objaleatorio], locaisaleatorios[ptaleatorio].position, locaisaleatorios[ptaleatorio].rotation); // Instancia o objeto
+            tempo = tempoentreobjetos;     // Reinicia o temporizador
+        }                                  // Fim do if
+    }                                      // Fim do Update
+}                                          // Fim da classe
