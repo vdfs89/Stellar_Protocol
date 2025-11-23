@@ -16,11 +16,14 @@ public class GameManager : MonoBehaviour
     {
         coins += amount;
         Debug.Log("Moedas: " + coins);
+        ProgressionManager.Instance?.AddScore(amount);
+        AnalyticsManager.LogEvent("coin_collected");
     }
 
     public void TakeDamage()
     {
         lives--;
+        AnalyticsManager.LogEvent("player_hit");
         if (lives <= 0)
         {
             Debug.Log("Game Over");
@@ -30,5 +33,6 @@ public class GameManager : MonoBehaviour
     public void Heal()
     {
         lives++;
+        AnalyticsManager.LogEvent("player_healed");
     }
 }
