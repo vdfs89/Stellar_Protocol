@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8167549182762505329}
+  - component: {fileID: 1234567890123456789}
   m_Layer: 0
   m_Name: InimigoIA
   m_TagString: Untagged
@@ -31,3 +32,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1234567890123456789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3142217019282772842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e67da598d35d3ff43bbb95653b83383e, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  velocidade: 2.5
+  distanciaMinima: 1
+  balaInimigaPrefab: {fileID: 0}
+  pontoDeTiro: {fileID: 0}
+  intervaloTiro: 2
