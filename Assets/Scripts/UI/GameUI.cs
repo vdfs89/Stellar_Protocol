@@ -5,10 +5,7 @@ public class GameUI : MonoBehaviour
 {
     public Text scoreText;
     public Text livesText;
-
-    // Assets for programmatic UI generation if needed
-    private Sprite heartSprite; // Would need to load these
-    private Sprite starSprite;
+    public Font uiFont; // Allow user to assign font in inspector
 
     void Awake()
     {
@@ -75,13 +72,25 @@ public class GameUI : MonoBehaviour
         panelRT.sizeDelta = new Vector2(300, 100);
         panelGO.GetComponent<Image>().color = new Color(0, 0, 0, 0.4f);
 
+        // Resolve Font
+        Font fontToUse = uiFont;
+        if (fontToUse == null)
+        {
+             // Try to use a default system font instead of Resources.GetBuiltinResource which is deprecated/unreliable
+             fontToUse = Font.CreateDynamicFontFromOSFont("Arial", 16);
+             if (fontToUse == null)
+             {
+                 fontToUse = Resources.GetBuiltinResource<Font>("Arial.ttf");
+             }
+        }
+
         // Create Lives Text
         if (livesText == null)
         {
             GameObject livesTextGO = new GameObject("LivesText", typeof(Text));
             livesTextGO.transform.SetParent(panelGO.transform, false);
             livesText = livesTextGO.GetComponent<Text>();
-            livesText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            livesText.font = fontToUse;
             livesText.color = Color.white;
             livesText.alignment = TextAnchor.MiddleLeft;
             RectTransform ltRT = livesTextGO.GetComponent<RectTransform>();
@@ -95,7 +104,7 @@ public class GameUI : MonoBehaviour
             GameObject scoreTextGO = new GameObject("ScoreText", typeof(Text));
             scoreTextGO.transform.SetParent(panelGO.transform, false);
             scoreText = scoreTextGO.GetComponent<Text>();
-            scoreText.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+            scoreText.font = fontToUse;
             scoreText.color = Color.white;
             scoreText.alignment = TextAnchor.MiddleLeft;
             RectTransform stRT = scoreTextGO.GetComponent<RectTransform>();
