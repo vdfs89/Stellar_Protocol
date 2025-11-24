@@ -2,24 +2,31 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    public HUDCreator hud;
+    // Removing direct HUD reference to decouple.
+    // PlayerStats can handle local player data or just delegate to GameManager.
+    // For simplicity in this refactor, we'll make this script interact with GameManager.
 
     void Start()
     {
-        hud.UpdateLives(3);
-        hud.AddStar(0);
+        // Initial sync if needed, but GameManager handles global state.
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Enemy") || collision.CompareTag("EnemyBullet"))
         {
-            hud.UpdateLives(2);
+            GameManager.Instance.TakeDamage(1);
+            // Optional: Destroy bullet if it's a bullet
+            if (collision.CompareTag("EnemyBullet"))
+            {
+                Destroy(collision.gameObject);
+            }
         }
 
-        if (collision.CompareTag("Star"))
+        if (collision.CompareTag("Star") || collision.CompareTag("Coin"))
         {
-            hud.AddStar(1);
+            GameManager.Instance.AddCoins(1);
+            Destroy(collision.gameObject);
         }
     }
 }
