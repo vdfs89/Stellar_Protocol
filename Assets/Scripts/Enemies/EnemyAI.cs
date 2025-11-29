@@ -55,10 +55,23 @@ public class EnemyAI : MonoBehaviour
     {
         // Calcula a direção normalizada do inimigo em relação ao jogador
         Vector2 direcao = (jogador.position - transform.position).normalized;
+        float distancia = Vector2.Distance(jogador.position, transform.position);
 
-        // Move o inimigo em direção ao jogador, se estiver longe o suficiente
-        if (Vector2.Distance(jogador.position, transform.position) > distanciaMinima)
-            transform.position += (Vector3)(direcao * velocidade * Time.deltaTime);
+        // Se estiver longe, move-se em direção ao jogador
+        if (distancia > distanciaMinima)
+        {
+            // Adiciona um movimento senoidal lateral para "strafe"
+            float strafe = Mathf.Sin(Time.time * 2f) * 0.5f;
+            Vector2 movimento = direcao + new Vector2(strafe, 0); // Modifica ligeiramente a direção
+
+            transform.position += (Vector3)(movimento.normalized * velocidade * Time.deltaTime);
+        }
+        else
+        {
+            // Se estiver perto, faz um movimento de órbita ou strafe lateral mais forte
+            float strafe = Mathf.Sin(Time.time * 3f) * velocidade * Time.deltaTime;
+            transform.position += transform.right * strafe;
+        }
     }
 
     void RotateTowardsPlayer()
