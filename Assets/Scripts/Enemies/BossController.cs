@@ -41,12 +41,24 @@ public class BossController : MonoBehaviour
         // Verifica se há pontos de tiro e prefab válido
         if (bulletPrefab != null && firePoints.Length > 0)
         {
-            // Dispara a partir do ponto atual
-            Transform currentFirePoint = firePoints[fireIndex];
-            Instantiate(bulletPrefab, currentFirePoint.position, currentFirePoint.rotation);
+            // Frequência de tiro aumenta se a vida estiver baixa (Rage Mode)
+            float currentInterval = health < 25 ? fireInterval / 2f : fireInterval;
 
-            // Avança para o próximo ponto (ciclo)
-            fireIndex = (fireIndex + 1) % firePoints.Length;
+            // Reagendar próximo tiro se necessário (a lógica original usa InvokeRepeating com tempo fixo,
+            // então para alterar dinamicamente precisaríamos cancelar e invocar de novo, ou usar corotina.
+            // Para simplicidade, vamos disparar múltiplos tiros em "Rage Mode" dentro deste método)
+
+            int shotsToFire = health < 25 ? 3 : 1;
+
+            for (int i = 0; i < shotsToFire; i++)
+            {
+                int index = (fireIndex + i) % firePoints.Length;
+                Transform currentFirePoint = firePoints[index];
+                Instantiate(bulletPrefab, currentFirePoint.position, currentFirePoint.rotation);
+            }
+
+            // Avança o índice
+            fireIndex = (fireIndex + shotsToFire) % firePoints.Length;
         }
     }
 
