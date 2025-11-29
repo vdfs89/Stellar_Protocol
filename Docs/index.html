@@ -13,7 +13,8 @@
       #unity-loading-bar { width: 200px; height: 10px; background: #333; border-radius: 5px; overflow: hidden; }
       #unity-progress-bar-full { width: 0%; height: 100%; background: #fff; transition: width 0.2s; }
       #loading-text { color: white; font-family: sans-serif; margin-bottom: 10px; }
-      .loading-content { display: flex; flex-direction: column; align-items: center; }
+      .loading-content { display: flex; flex-direction: column; align-items: center; text-align: center; }
+      #error-message { color: red; font-family: sans-serif; margin-top: 20px; display: none; max-width: 80%; }
     </style>
   </head>
   <body>
@@ -25,6 +26,7 @@
           <div id="unity-loading-bar">
             <div id="unity-progress-bar-full"></div>
           </div>
+          <div id="error-message"></div>
         </div>
       </div>
     </div>
@@ -45,6 +47,15 @@
       var canvas = document.querySelector("#unity-canvas");
       var loadingCover = document.querySelector("#loading-cover");
       var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var errorMessage = document.querySelector("#error-message");
+
+      function showError(message) {
+        console.error(message);
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block";
+        document.getElementById("unity-loading-bar").style.display = "none";
+        document.getElementById("loading-text").textContent = "Error Loading Game";
+      }
 
       var script = document.createElement("script");
       script.src = loaderUrl;
@@ -54,22 +65,11 @@
         }).then((unityInstance) => {
           loadingCover.style.display = "none";
         }).catch((message) => {
-          // If the loader script is not found or fails to load, this might not catch it (browser console will show 404).
-          // But if createUnityInstance fails, this will catch it.
-          // Fallback to "WebGL" name if "Stellar Protocol" fails?
-          // It's hard to guess without the files.
-          // I will stick to "Stellar Protocol" as it matches the productName settings.
-          // But wait, Unity often uses the project folder name or "Build" if not specified?
-          // Actually, by default it is usually "Build" if built via script, or [ProjectName] if via UI.
-          // Let's assume the user will build and it will probably be named "Stellar Protocol" or "Build" or "WebGL".
-          // The previous index.html used "WebGL.loader.js". Maybe I should try that too?
-          alert(message);
+          showError("Unity Error: " + message);
         });
       };
 
-      // Error handling for script load
       script.onerror = () => {
-         // Try fallback to WebGL.loader.js just in case
          console.log("Stellar Protocol.loader.js not found, trying WebGL.loader.js");
          var fallbackScript = document.createElement("script");
          fallbackScript.src = buildUrl + "/WebGL.loader.js";
@@ -82,11 +82,11 @@
             }).then((unityInstance) => {
               loadingCover.style.display = "none";
             }).catch((message) => {
-              alert(message);
+              showError("Unity Fallback Error: " + message);
             });
          };
          fallbackScript.onerror = () => {
-             alert("Could not load game loader. Please rebuild the project for WebGL and ensure files are in Docs/Build/");
+             showError("Could not load game files. Please ensure 'Build/Stellar Protocol.loader.js' or 'Build/WebGL.loader.js' exists in 'Docs/Build/'.");
          }
          document.body.appendChild(fallbackScript);
       };
