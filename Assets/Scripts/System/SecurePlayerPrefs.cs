@@ -22,7 +22,7 @@ public static class SecurePlayerPrefs
 
         if (int.TryParse(value, out int result))
             return result;
-
+        
         return defaultValue;
     }
 

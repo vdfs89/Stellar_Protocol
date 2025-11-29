@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Movement")]
     public float velocidade = 2.5f;           // Velocidade de movimentação do inimigo
     public float distanciaMinima = 1f;        // Distância mínima para parar de seguir o jogador
-
+    
     [Header("Combat")]
     public GameObject balaInimigaPrefab;      // Prefab da bala que o inimigo vai disparar
     public Transform pontoDeTiro;             // Posição de onde a bala será instanciada
@@ -20,7 +20,7 @@ public class EnemyAI : MonoBehaviour
     {
         currentHealth = maxHealth;
         FindPlayer();
-
+        
         // Define o tempo do primeiro tiro
         tempoProximoTiro = Time.time + intervaloTiro;
     }
@@ -98,7 +98,7 @@ public class EnemyAI : MonoBehaviour
         {
             // Logic handled in OnDestroy of Enemy.cs, so just destroying is fine
         }
-
+        
         Destroy(gameObject);
     }
 

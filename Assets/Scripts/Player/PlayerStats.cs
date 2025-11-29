@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    // Removing direct HUD reference to decouple.
+    // Removing direct HUD reference to decouple. 
     // PlayerStats can handle local player data or just delegate to GameManager.
     // For simplicity in this refactor, we'll make this script interact with GameManager.
 

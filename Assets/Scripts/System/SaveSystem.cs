@@ -31,7 +31,7 @@ public class SaveSystem : MonoBehaviour
         {
             if (SecurePlayerPrefs.HasKey(CoinsKey))
                 GameManager.Instance.coins = SecurePlayerPrefs.GetInt(CoinsKey);
-
+            
             if (SecurePlayerPrefs.HasKey(LivesKey))
                 GameManager.Instance.lives = SecurePlayerPrefs.GetInt(LivesKey);
 

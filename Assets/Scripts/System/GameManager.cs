@@ -15,12 +15,12 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
+        if (Instance == null) 
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
-        else
+        else 
         {
             Destroy(gameObject);
         }
@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
     {
         coins += amount;
         Debug.Log("Moedas: " + coins);
-
+        
         if (ProgressionManager.Instance != null)
             ProgressionManager.Instance.AddScore(amount);
-
+            
         AnalyticsManager.LogEvent("coin_collected");
         OnCoinsChanged?.Invoke(coins);
     }
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     {
         lives -= damage;
         AnalyticsManager.LogEvent("player_hit");
-
+        
         OnLivesChanged?.Invoke(lives);
 
         if (lives <= 0)

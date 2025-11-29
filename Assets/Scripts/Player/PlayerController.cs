@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
 
         // Movimento lateral baseado em eixo global
         Vector3 newPosition = transform.position + Vector3.right * moveX * speed * Time.deltaTime;
-
+        
         // Aplica limites de tela
         newPosition.x = Mathf.Clamp(newPosition.x, minX, maxX);
         transform.position = newPosition;

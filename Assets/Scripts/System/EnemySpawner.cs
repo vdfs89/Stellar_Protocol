@@ -71,10 +71,10 @@ public class EnemySpawner : MonoBehaviour
         currentWaveIndex = index;
         enemiesSpawnedInWave = 0;
         isWaitingForWave = false;
-
+        
         Wave currentWave = waves[currentWaveIndex];
         spawnTimer = currentWave.spawnInterval / difficultyMultiplier; // Apply difficulty
-
+        
         Debug.Log($"Starting Wave: {currentWave.waveName}");
         // Notify UI if possible (GameManager event)
     }
@@ -99,7 +99,7 @@ public class EnemySpawner : MonoBehaviour
             Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
             Instantiate(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
-
+            
             enemiesSpawnedInWave++;
             spawnTimer = currentWave.spawnInterval / difficultyMultiplier;
         }

@@ -6,6 +6,6 @@ using UnityEngine;
 public class InimigoIA : EnemyAI
 {
     // Inherits all logic from EnemyAI.
-    // Unity Inspector values might be lost if not carefully migrated,
+    // Unity Inspector values might be lost if not carefully migrated, 
     // but this prevents "Missing Script" errors on the GameObject itself.
 }

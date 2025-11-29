@@ -22,7 +22,7 @@ public class GameUI : MonoBehaviour
         {
             GameManager.Instance.OnCoinsChanged += UpdateScoreUI;
             GameManager.Instance.OnLivesChanged += UpdateLivesUI;
-
+            
             // Initialize
             UpdateScoreUI(GameManager.Instance.coins);
             UpdateLivesUI(GameManager.Instance.lives);
