@@ -8,6 +8,9 @@ TagManager:
   - Boss
   - explosion
   - Bullet
+  - EnemyBullet
+  - Obstaculo
+  - Inimigo
   layers:
   - Default
   - TransparentFX

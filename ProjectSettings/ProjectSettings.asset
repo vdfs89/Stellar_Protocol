@@ -141,7 +141,8 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -380,7 +381,10 @@ PlayerSettings:
       m_Height: 36
       m_Kind: 0
       m_SubKind: 
-  m_BuildTargetBatching: []
+  m_BuildTargetBatching:
+  - m_BuildTarget: Standalone
+    m_StaticBatching: 1
+    m_DynamicBatching: 0
   m_BuildTargetShaderSettings: []
   m_BuildTargetGraphicsJobs: []
   m_BuildTargetGraphicsJobMode: []
@@ -766,10 +770,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 1
   windowsGamepadBackendHint: 0
-  cloudProjectId: 8cbb713a-2fec-4816-9bda-ead5d54eda1c
+  cloudProjectId: a2a78001-1c6e-469b-b55c-5bd61cf9f200
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Stellar Protocol
+  projectName: Stellar Protocol 2025-11-27_08-09-55
   organizationId: mkmillhouse89
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
