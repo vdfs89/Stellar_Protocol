@@ -31,8 +31,9 @@
       </div>
     </div>
     <script>
-      // Paths adjusted for Root deployment (looking into Docs/Build)
-      var buildUrl = "Docs/Build";
+      // --- CORREÇÃO AQUI: Removemos o "Docs/" do caminho ---
+      var buildUrl = "Build"; 
+      
       var loaderUrl = buildUrl + "/Stellar Protocol.loader.js";
       var config = {
         dataUrl: buildUrl + "/Stellar Protocol.data",
@@ -70,11 +71,12 @@
         });
       };
 
+      // Fallback para caso os arquivos se chamem "WebGL" em vez de "Stellar Protocol"
       script.onerror = () => {
-         console.log("Stellar Protocol.loader.js not found, trying WebGL.loader.js");
-         var fallbackScript = document.createElement("script");
-         fallbackScript.src = buildUrl + "/WebGL.loader.js";
-         fallbackScript.onload = () => {
+          console.log("Stellar Protocol.loader.js not found, trying WebGL.loader.js");
+          var fallbackScript = document.createElement("script");
+          fallbackScript.src = buildUrl + "/WebGL.loader.js";
+          fallbackScript.onload = () => {
             config.dataUrl = buildUrl + "/WebGL.data";
             config.frameworkUrl = buildUrl + "/WebGL.framework.js";
             config.codeUrl = buildUrl + "/WebGL.wasm";
@@ -85,11 +87,12 @@
             }).catch((message) => {
               showError("Unity Fallback Error: " + message);
             });
-         };
-         fallbackScript.onerror = () => {
-             showError("Could not load game files. Please ensure 'Docs/Build/Stellar Protocol.loader.js' exists.");
-         }
-         document.body.appendChild(fallbackScript);
+          };
+          fallbackScript.onerror = () => {
+              // Ajustei a mensagem de erro também
+              showError("Could not load game files. Please ensure 'Build/Stellar Protocol.loader.js' exists inside the repository.");
+          }
+          document.body.appendChild(fallbackScript);
       };
 
       document.body.appendChild(script);
