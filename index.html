@@ -31,7 +31,8 @@
       </div>
     </div>
     <script>
-      var buildUrl = "Build";
+      // Paths adjusted for Root deployment (looking into Docs/Build)
+      var buildUrl = "Docs/Build";
       var loaderUrl = buildUrl + "/Stellar Protocol.loader.js";
       var config = {
         dataUrl: buildUrl + "/Stellar Protocol.data",
@@ -86,7 +87,7 @@
             });
          };
          fallbackScript.onerror = () => {
-             showError("Não foi possível carregar os arquivos do jogo. Verifique se 'Build/Stellar Protocol.loader.js' existe em 'Docs/Build/'.");
+             showError("Não foi possível carregar os arquivos do jogo. Verifique se 'Docs/Build/Stellar Protocol.loader.js' existe.");
          }
          document.body.appendChild(fallbackScript);
       };

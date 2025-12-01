@@ -2,7 +2,6 @@
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
-[Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
@@ -42,6 +41,9 @@ sysinfo.txt
 *.DotSettings.user
 
 # Builds
+# We allow Build/ folder because some users build to root.
+# We explicitly ignore specific binary builds but allow WebGL artifacts if they happen to be there.
+# [Bb]uild/  <-- COMMENTED OUT to allow checks below
 *.apk
 *.aab
 *.zip
@@ -59,3 +61,6 @@ AssetBundles/
 # Allow Build folder in Docs for GitHub Pages
 !Docs/Build/
 !Docs/TemplateData/
+
+# Allow Build folder in Root (Common mistake)
+!Build/
