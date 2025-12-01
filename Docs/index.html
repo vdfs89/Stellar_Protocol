@@ -23,7 +23,7 @@
       <canvas id="unity-canvas" tabindex="-1"></canvas>
       <div id="loading-cover">
         <div class="loading-content">
-          <div id="loading-text">Loading Stellar Protocol...</div>
+          <div id="loading-text">Carregando Stellar Protocol...</div>
           <div id="unity-loading-bar">
             <div id="unity-progress-bar-full"></div>
           </div>
@@ -33,7 +33,6 @@
     </div>
     <script>
       const buildUrl = "Build";
-
       const container = document.querySelector("#unity-container");
       const canvas = document.querySelector("#unity-canvas");
       const loadingCover = document.querySelector("#loading-cover");
@@ -45,9 +44,11 @@
         errorMessage.textContent = message;
         errorMessage.style.display = "block";
         document.getElementById("unity-loading-bar").style.display = "none";
-        document.getElementById("loading-text").textContent = "Error Loading Game"; // Corrigido para "Error"
+        document.getElementById("loading-text").textContent = "Error Loading Game";
       }
 
+      // Função inteligente que tenta carregar o jogo.
+      // Se falhar com um nome, a gente tenta com outro.
       function tryLoadBuild(buildName) {
         const config = {
           dataUrl: `${buildUrl}/${buildName}.data`,
@@ -63,37 +64,45 @@
           const loaderUrl = `${buildUrl}/${buildName}.loader.js`;
           const script = document.createElement("script");
           script.src = loaderUrl;
+          
           script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
               progressBarFull.style.width = `${100 * progress}%`;
             })
             .then((unityInstance) => {
               loadingCover.style.display = "none";
-              // Foca o canvas para capturar input do teclado imediatamente
+              // Foca no jogo para o teclado funcionar na hora!
               canvas.focus();
               resolve(unityInstance);
             })
             .catch((message) => {
-              // Rejeita para que a próxima tentativa possa ocorrer
               reject(`Unity Error with ${buildName}: ${message}`);
             });
           };
+          
           script.onerror = () => {
             console.log(`${loaderUrl} not found.`);
             reject(`Could not load ${loaderUrl}`);
           };
+          
           document.body.appendChild(script);
         });
       }
 
-      // Tenta carregar 'Build', se falhar, tenta 'WebGL'
+      // Tenta carregar 'Build' (o nome que você gerou).
+      // Se falhar, tenta 'WebGL' (o nome padrão antigo).
+      // Se falhar, tenta 'Stellar Protocol'.
       tryLoadBuild("Build")
         .catch(() => {
           console.log("Fallback: trying to load 'WebGL'.");
           return tryLoadBuild("WebGL");
         })
         .catch(() => {
-          showError("Could not load game files. Please ensure 'Build/Build.loader.js' or 'Build/WebGL.loader.js' exists.");
+           console.log("Fallback: trying to load 'Stellar Protocol'.");
+           return tryLoadBuild("Stellar Protocol");
+        })
+        .catch(() => {
+          showError("Could not load game files. Please ensure 'Build/Build.loader.js' exists.");
         });
     </script>
   </body>
