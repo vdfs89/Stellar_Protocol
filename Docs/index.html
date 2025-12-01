@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Stellar Protocol</title>
     <link rel="icon" type="image/png" href="favicon.png">
     <style>
@@ -31,67 +32,69 @@
       </div>
     </div>
     <script>
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/Stellar Protocol.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/Stellar Protocol.data",
-        frameworkUrl: buildUrl + "/Stellar Protocol.framework.js",
-        codeUrl: buildUrl + "/Stellar Protocol.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Stellar Protocol",
-        productVersion: "0.1",
-      };
+      const buildUrl = "Build";
 
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingCover = document.querySelector("#loading-cover");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var errorMessage = document.querySelector("#error-message");
+      const container = document.querySelector("#unity-container");
+      const canvas = document.querySelector("#unity-canvas");
+      const loadingCover = document.querySelector("#loading-cover");
+      const progressBarFull = document.querySelector("#unity-progress-bar-full");
+      const errorMessage = document.querySelector("#error-message");
 
       function showError(message) {
         console.error(message);
         errorMessage.textContent = message;
         errorMessage.style.display = "block";
         document.getElementById("unity-loading-bar").style.display = "none";
-        document.getElementById("loading-text").textContent = "Error Loading Game";
+        document.getElementById("loading-text").textContent = "Error Loading Game"; // Corrigido para "Error"
       }
 
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          progressBarFull.style.width = 100 * progress + "%";
-        }).then((unityInstance) => {
-          loadingCover.style.display = "none";
-        }).catch((message) => {
-          showError("Unity Error: " + message);
-        });
-      };
+      function tryLoadBuild(buildName) {
+        const config = {
+          dataUrl: `${buildUrl}/${buildName}.data`,
+          frameworkUrl: `${buildUrl}/${buildName}.framework.js`,
+          codeUrl: `${buildUrl}/${buildName}.wasm`,
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "DefaultCompany",
+          productName: "Stellar Protocol",
+          productVersion: "0.1",
+        };
 
-      script.onerror = () => {
-         console.log("Stellar Protocol.loader.js not found, trying WebGL.loader.js");
-         var fallbackScript = document.createElement("script");
-         fallbackScript.src = buildUrl + "/WebGL.loader.js";
-         fallbackScript.onload = () => {
-            config.dataUrl = buildUrl + "/WebGL.data";
-            config.frameworkUrl = buildUrl + "/WebGL.framework.js";
-            config.codeUrl = buildUrl + "/WebGL.wasm";
+        return new Promise((resolve, reject) => {
+          const loaderUrl = `${buildUrl}/${buildName}.loader.js`;
+          const script = document.createElement("script");
+          script.src = loaderUrl;
+          script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
-              progressBarFull.style.width = 100 * progress + "%";
-            }).then((unityInstance) => {
+              progressBarFull.style.width = `${100 * progress}%`;
+            })
+            .then((unityInstance) => {
               loadingCover.style.display = "none";
-            }).catch((message) => {
-              showError("Unity Fallback Error: " + message);
+              // Foca o canvas para capturar input do teclado imediatamente
+              canvas.focus();
+              resolve(unityInstance);
+            })
+            .catch((message) => {
+              // Rejeita para que a próxima tentativa possa ocorrer
+              reject(`Unity Error with ${buildName}: ${message}`);
             });
-         };
-         fallbackScript.onerror = () => {
-             showError("Could not load game files. Please ensure 'Build/Stellar Protocol.loader.js' or 'Build/WebGL.loader.js' exists in 'Docs/Build/'.");
-         }
-         document.body.appendChild(fallbackScript);
-      };
+          };
+          script.onerror = () => {
+            console.log(`${loaderUrl} not found.`);
+            reject(`Could not load ${loaderUrl}`);
+          };
+          document.body.appendChild(script);
+        });
+      }
 
-      document.body.appendChild(script);
+      // Tenta carregar 'Build', se falhar, tenta 'WebGL'
+      tryLoadBuild("Build")
+        .catch(() => {
+          console.log("Fallback: trying to load 'WebGL'.");
+          return tryLoadBuild("WebGL");
+        })
+        .catch(() => {
+          showError("Could not load game files. Please ensure 'Build/Build.loader.js' or 'Build/WebGL.loader.js' exists.");
+        });
     </script>
   </body>
 </html>
